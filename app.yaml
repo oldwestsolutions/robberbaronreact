@@ -1,0 +1,14 @@
+name: robberbaron-trading
+services:
+- name: web
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: YOUR_USERNAME/robberbaron-trading
+  build_command: npm run build
+  run_command: node server.js
+  environment_slug: node-js
+  instance_size_slug: basic-xxs
+  instance_count: 1
+  routes:
+  - path: / 

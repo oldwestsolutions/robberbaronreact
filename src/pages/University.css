@@ -1,0 +1,581 @@
+/* Base styles from Home.css */
+.university-container {
+  background-color: var(--primary-black);
+  color: white;
+  min-height: 100vh;
+}
+
+/* Hero section */
+.university-hero {
+  background-color: var(--dark-gray);
+  padding: 6rem 4rem;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.university-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(45deg, var(--primary-black) 25%, transparent 25%, transparent 75%, var(--primary-black) 75%),
+    linear-gradient(45deg, var(--primary-black) 25%, transparent 25%, transparent 75%, var(--primary-black) 75%);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+  opacity: 0.05;
+}
+
+.university-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.university-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+}
+
+.university-hero h1::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.university-hero p {
+  font-size: 1.4rem;
+  color: var(--text-gray);
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.university-cta-btn {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.university-cta-btn:hover {
+  background-color: var(--hover-green);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 77, 64, 0.3);
+}
+
+/* Overview section */
+.university-overview {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+}
+
+.university-overview-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.university-overview h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+}
+
+.university-overview h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.university-overview p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+}
+
+/* Learning Paths section */
+.learning-paths {
+  padding: 6rem 4rem;
+  background-color: var(--secondary-black);
+}
+
+.learning-paths h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.learning-paths h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.learning-paths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.learning-path-card {
+  background-color: var(--dark-gray);
+  border-radius: 8px;
+  padding: 2.5rem;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.learning-path-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.path-icon-container {
+  width: 80px;
+  height: 80px;
+  background-color: var(--medium-gray);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.learning-path-card:hover .path-icon-container {
+  background-color: var(--accent-green);
+}
+
+.path-icon {
+  font-size: 2.5rem;
+  color: var(--text-light);
+}
+
+.learning-path-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.learning-path-card p {
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.learning-path-card ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.learning-path-card li {
+  color: var(--text-gray);
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.7rem;
+}
+
+.learning-path-card li::before {
+  content: "✓";
+  color: var(--accent-green);
+  position: absolute;
+  left: 0;
+}
+
+.path-btn {
+  background-color: transparent;
+  border: 1px solid var(--accent-green);
+  color: var(--text-light);
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.path-btn:hover {
+  background-color: var(--accent-green);
+  color: white;
+}
+
+/* Featured Courses section */
+.featured-courses {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+}
+
+.featured-courses h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.featured-courses h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.course-card {
+  background-color: var(--dark-gray);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.course-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.course-level {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--accent-green);
+  color: white;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 0 8px 0 8px;
+}
+
+.course-card h3 {
+  font-size: 1.3rem;
+  padding: 1.5rem 1.5rem 0.5rem;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+.course-card p {
+  padding: 0 1.5rem 1rem;
+  color: var(--text-gray);
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.course-meta {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: var(--medium-gray);
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+.course-duration, .course-instructor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.course-btn {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 1rem;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.course-btn:hover {
+  background-color: var(--hover-green);
+}
+
+/* Benefits section */
+.university-benefits {
+  padding: 6rem 4rem;
+  background-color: var(--secondary-black);
+}
+
+.university-benefits h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.university-benefits h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.benefit-card {
+  background-color: var(--dark-gray);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px);
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+  color: var(--accent-green);
+  margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.benefit-card p {
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+/* Testimonials section */
+.testimonials {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+}
+
+.testimonials h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.testimonials h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background-color: var(--dark-gray);
+  padding: 2rem;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  font-size: 6rem;
+  color: var(--medium-gray);
+  line-height: 1;
+  z-index: 0;
+}
+
+.testimonial-card p {
+  position: relative;
+  color: var(--text-gray);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  z-index: 1;
+}
+
+.testimonial-author {
+  padding-top: 1rem;
+  border-top: 1px solid var(--medium-gray);
+}
+
+.testimonial-name {
+  font-weight: bold;
+  color: var(--text-light);
+  margin-bottom: 0.2rem;
+}
+
+.testimonial-title {
+  color: var(--accent-green);
+  font-size: 0.9rem;
+}
+
+/* CTA section */
+.university-cta {
+  padding: 6rem 4rem;
+  background-color: var(--secondary-black);
+  text-align: center;
+}
+
+.university-cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--dark-gray);
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.university-cta h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+.university-cta p {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.university-enroll-btn {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.university-enroll-btn:hover {
+  background-color: var(--hover-green);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 77, 64, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .university-hero,
+  .university-overview,
+  .learning-paths,
+  .featured-courses,
+  .university-benefits,
+  .testimonials,
+  .university-cta {
+    padding: 4rem 2rem;
+  }
+  
+  .university-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .university-hero p {
+    font-size: 1.1rem;
+  }
+  
+  .university-cta-content {
+    padding: 2rem;
+  }
+  
+  .learning-path-card,
+  .course-card,
+  .benefit-card,
+  .testimonial-card {
+    margin-bottom: 1.5rem;
+  }
+} 

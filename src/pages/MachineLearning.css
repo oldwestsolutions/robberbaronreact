@@ -1,0 +1,402 @@
+/* Base styles from Home.css */
+.ml-page-container {
+  background-color: var(--primary-black);
+  color: white;
+  min-height: 100vh;
+}
+
+/* Hero section */
+.ml-hero {
+  background-color: var(--dark-gray);
+  padding: 6rem 4rem;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.ml-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, var(--chart-green) 1px, transparent 1px),
+    radial-gradient(circle at 40% 70%, var(--chart-green) 1px, transparent 1px),
+    radial-gradient(circle at 60% 40%, var(--chart-green) 1px, transparent 1px),
+    radial-gradient(circle at 80% 50%, var(--chart-green) 1px, transparent 1px),
+    radial-gradient(circle at 90% 90%, var(--chart-green) 1px, transparent 1px);
+  background-size: 300px 300px;
+  opacity: 0.1;
+  animation: float 15s linear infinite;
+}
+
+.ml-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.ml-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #ffffff, var(--chart-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.ml-hero p {
+  font-size: 1.4rem;
+  color: var(--text-gray);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Overview section */
+.ml-overview {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+}
+
+.ml-overview-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ml-overview h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+}
+
+.ml-overview h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.ml-overview p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+}
+
+/* Capabilities section */
+.ml-capabilities {
+  padding: 6rem 4rem;
+  background-color: var(--secondary-black);
+}
+
+.ml-capabilities h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ml-capabilities h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.ml-capability-card {
+  background-color: var(--dark-gray);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ml-capability-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.ml-capability-header {
+  background: linear-gradient(90deg, var(--accent-green), var(--dark-gray));
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ml-capability-icon {
+  font-size: 2rem;
+  color: var(--text-light);
+}
+
+.ml-capability-header h3 {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.ml-capability-content {
+  padding: 1.5rem;
+}
+
+.ml-capability-content p {
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.ml-capability-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ml-capability-content li {
+  color: var(--text-gray);
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.8rem;
+}
+
+.ml-capability-content li::before {
+  content: "•";
+  color: var(--chart-green);
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+/* Architecture section */
+.ml-architecture {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+}
+
+.ml-architecture h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ml-architecture h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.ml-architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ml-architecture-item {
+  background-color: var(--dark-gray);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ml-architecture-item:hover {
+  transform: translateY(-10px);
+}
+
+.ml-architecture-icon {
+  font-size: 2.5rem;
+  color: var(--accent-green);
+  margin-bottom: 1rem;
+}
+
+.ml-architecture-item h4 {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.ml-architecture-item p {
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+/* Industries section */
+.ml-industries {
+  padding: 6rem 4rem;
+  background-color: var(--secondary-black);
+}
+
+.ml-industries h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--text-light);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ml-industries h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-green);
+  border-radius: 2px;
+}
+
+.ml-industries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ml-industry-card {
+  background-color: var(--dark-gray);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid var(--accent-green);
+  height: 100%;
+}
+
+.ml-industry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.ml-industry-card h3 {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.ml-industry-card p {
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+/* Contact section */
+.ml-contact {
+  padding: 6rem 4rem;
+  background-color: var(--primary-black);
+  text-align: center;
+}
+
+.ml-contact-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--dark-gray);
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.ml-contact h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+.ml-contact p {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.ml-contact-btn {
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ml-contact-btn:hover {
+  background-color: var(--hover-green);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 77, 64, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ml-hero, 
+  .ml-overview, 
+  .ml-capabilities, 
+  .ml-architecture,
+  .ml-industries,
+  .ml-contact {
+    padding: 4rem 2rem;
+  }
+  
+  .ml-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .ml-hero p {
+    font-size: 1.1rem;
+  }
+  
+  .ml-overview h2,
+  .ml-capabilities h2,
+  .ml-architecture h2,
+  .ml-industries h2 {
+    font-size: 2rem;
+  }
+  
+  .ml-contact-content {
+    padding: 2rem;
+  }
+}
+
+/* Animation keyframes (from Home.css) */
+@keyframes float {
+  0% { background-position: 0 0; }
+  100% { background-position: 300px 300px; }
+} 

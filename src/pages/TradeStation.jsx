@@ -1,33 +1,52 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaChartLine, FaWallet, FaBell, FaCog, FaUser, FaSearch, FaStar, FaCaretUp, FaCaretDown, FaSync, FaDollarSign, FaPercent } from 'react-icons/fa';
+import { FaSearch, FaBell, FaWallet, FaUser, FaStar, FaChartLine, FaCaretUp, FaCaretDown, FaInfoCircle, FaNewspaper, FaUsers, FaGlobe, FaHistory } from 'react-icons/fa';
 import './TradeStation.css';
 
 const TradeStation = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('chart');
-  const [optionType, setOptionType] = useState('call');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [activeAccount, setActiveAccount] = useState('all');
-  const [timeFrame, setTimeFrame] = useState('1D');
-  const [showDollars, setShowDollars] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  // Mock data for top companies
+  const topCompanies = [
+    { id: 1, symbol: 'AAPL', name: 'Apple Inc.', price: 175.34, change: 4.23, changePercent: 2.45, volume: '65.3M', marketCap: '2.89T', pe: 28.97, dividend: 0.82, description: 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.' },
+    { id: 2, symbol: 'MSFT', name: 'Microsoft Corporation', price: 327.89, change: 2.54, changePercent: 0.78, volume: '22.1M', marketCap: '2.45T', pe: 35.12, dividend: 0.95, description: 'Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide.' },
+    { id: 3, symbol: 'GOOGL', name: 'Alphabet Inc.', price: 132.67, change: -1.25, changePercent: -0.93, volume: '18.7M', marketCap: '1.67T', pe: 25.34, dividend: 0, description: 'Alphabet Inc. provides various products and platforms in the United States, Europe, the Middle East, Africa, the Asia-Pacific, Canada, and Latin America.' },
+    { id: 4, symbol: 'AMZN', name: 'Amazon.com, Inc.', price: 129.45, change: 3.78, changePercent: 3.01, volume: '41.2M', marketCap: '1.34T', pe: 61.87, dividend: 0, description: 'Amazon.com, Inc. engages in the retail sale of consumer products and subscriptions in North America and internationally.' },
+    { id: 5, symbol: 'TSLA', name: 'Tesla, Inc.', price: 242.56, change: -5.67, changePercent: -2.29, volume: '132.5M', marketCap: '769.42B', pe: 49.52, dividend: 0, description: 'Tesla, Inc. designs, develops, manufactures, leases, and sells electric vehicles, and energy generation and storage systems.' },
+  ];
+
+  // Recent news for companies (mock data)
+  const companyNews = [
+    { id: 1, company: 'AAPL', title: 'Apple Reports Record Q2 Earnings', date: '2023-05-01', source: 'Financial Times' },
+    { id: 2, company: 'AAPL', title: 'New iPhone 15 Rumored to Feature Major Camera Upgrade', date: '2023-04-28', source: 'Tech Insider' },
+    { id: 3, company: 'MSFT', title: 'Microsoft Cloud Services See 31% Growth', date: '2023-05-02', source: 'Wall Street Journal' },
+    { id: 4, company: 'GOOGL', title: 'Google Unveils New AI Advancements at Annual Conference', date: '2023-04-30', source: 'CNBC' },
+    { id: 5, company: 'AMZN', title: 'Amazon Prime Day Set for July 11-12', date: '2023-05-03', source: 'Reuters' },
+  ];
 
   const handleLogout = () => {
     navigate('/');
   };
 
-  // Generate next few Fridays for options expiry
-  const getExpiryDates = () => {
-    const dates = [];
-    let current = new Date();
-    for(let i = 0; i < 8; i++) {
-      while(current.getDay() !== 5) { // Find next Friday
-        current.setDate(current.getDate() + 1);
-      }
-      dates.push(new Date(current));
-      current.setDate(current.getDate() + 1);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const foundCompany = topCompanies.find(
+      company => company.symbol.toLowerCase() === searchQuery.toLowerCase() || 
+                company.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    if (foundCompany) {
+      setSelectedCompany(foundCompany);
+      setActiveTab('overview');
     }
-    return dates;
+  };
+
+  // Filter news for the selected company
+  const getCompanyNews = (symbol) => {
+    return companyNews.filter(news => news.company === symbol);
   };
 
   return (
@@ -35,10 +54,16 @@ const TradeStation = () => {
       <nav className="dashboard-nav">
         <div className="nav-left">
           <div className="dashboard-logo">RobberBaron.ai</div>
-          <div className="search-bar">
+          <form onSubmit={handleSearch} className="search-bar">
             <FaSearch className="search-icon" />
-            <input type="text" placeholder="Search markets..." />
-          </div>
+            <input 
+              type="text" 
+              placeholder="Search for companies (e.g., AAPL, Microsoft)" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="search-button">Search</button>
+          </form>
         </div>
         <div className="nav-controls">
           <button className="nav-button">
@@ -57,385 +82,235 @@ const TradeStation = () => {
         </div>
       </nav>
 
-      <div className="dashboard-layout">
-        <aside className="market-sidebar">
-          <h3>Volume Leaders</h3>
-          <div className="volume-list">
-            <div className="volume-item">
-              <div className="volume-info">
-                <span className="volume-name">TSLA</span>
-                <span className="volume-price">$242.68</span>
-              </div>
-              <div className="volume-stats">
-                <span className="volume-amount">125.4M</span>
-                <span className="change negative">-1.23%</span>
-              </div>
+      <div className="main-content-wrapper">
+        <div className="account-dashboard">
+          {/* Top Companies Section */}
+          <section className="top-companies-section">
+            <h2>Top Companies</h2>
+            <div className="company-list">
+              {topCompanies.map(company => (
+                <div 
+                  key={company.id} 
+                  className={`company-card ${selectedCompany?.symbol === company.symbol ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedCompany(company);
+                    setActiveTab('overview');
+                  }}
+                >
+                  <div className="company-header">
+                    <div className="company-symbol">{company.symbol}</div>
+                    <div className="company-name">{company.name}</div>
+                  </div>
+                  <div className="company-price">${company.price.toFixed(2)}</div>
+                  <div className={`company-change ${company.change >= 0 ? 'positive' : 'negative'}`}>
+                    {company.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
+                    {company.change.toFixed(2)} ({company.changePercent.toFixed(2)}%)
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="volume-item">
-              <div className="volume-info">
-                <span className="volume-name">AAPL</span>
-                <span className="volume-price">$175.34</span>
-              </div>
-              <div className="volume-stats">
-                <span className="volume-amount">98.2M</span>
-                <span className="change positive">+2.45%</span>
-              </div>
-            </div>
-            <div className="volume-item">
-              <div className="volume-info">
-                <span className="volume-name">AMD</span>
-                <span className="volume-price">$123.45</span>
-              </div>
-              <div className="volume-stats">
-                <span className="volume-amount">85.7M</span>
-                <span className="change positive">+3.67%</span>
-              </div>
-            </div>
-          </div>
+          </section>
 
-          <h3>Options Volume</h3>
-          <div className="options-volume">
-            <div className="volume-item">
-              <div className="volume-info">
-                <span className="volume-name">TSLA 250c</span>
-                <span className="volume-price">$5.45</span>
+          {/* Company Profile Section */}
+          {selectedCompany && (
+            <section className="company-profile-section">
+              <div className="profile-header">
+                <div className="company-title">
+                  <h1>{selectedCompany.symbol}</h1>
+                  <h2>{selectedCompany.name}</h2>
+                </div>
+                <div className="company-price-large">
+                  <div className="current-price">${selectedCompany.price.toFixed(2)}</div>
+                  <div className={`price-change ${selectedCompany.change >= 0 ? 'positive' : 'negative'}`}>
+                    {selectedCompany.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
+                    {selectedCompany.change.toFixed(2)} ({selectedCompany.changePercent.toFixed(2)}%)
+                  </div>
+                </div>
+                <button className="add-to-watchlist"><FaStar /> Add to Watchlist</button>
               </div>
-              <div className="volume-stats">
-                <span className="volume-amount">234.5K</span>
-                <span className="iv">IV: 65%</span>
-              </div>
-            </div>
-            <div className="volume-item">
-              <div className="volume-info">
-                <span className="volume-name">SPY 440p</span>
-                <span className="volume-price">$3.22</span>
-              </div>
-              <div className="volume-stats">
-                <span className="volume-amount">156.3K</span>
-                <span className="iv">IV: 45%</span>
-              </div>
-            </div>
-          </div>
-        </aside>
 
-        <section className="chart-section">
-          <div className="content-header">
-            <div className="symbol-info">
-              <h1>AAPL</h1>
-              <div className="price-info">
-                <span className="current-price">$175.34</span>
-                <span className="price-change positive">
-                  <FaCaretUp /> +4.23 (+2.45%)
-                </span>
-              </div>
-            </div>
-            <div className="trading-controls">
-              <button className="trade-btn buy">Buy</button>
-              <button className="trade-btn sell">Sell</button>
-            </div>
-          </div>
-
-          <div className="chart-container">
-            <div className="chart-header">
-              <div className="chart-tabs">
-                <button className="tab-btn active">Chart</button>
-                <button className="tab-btn">Depth</button>
-                <button className="tab-btn">Trades</button>
-              </div>
-              <div className="chart-controls">
-                <select className="timeframe-select">
-                  <option>1m</option>
-                  <option>5m</option>
-                  <option>15m</option>
-                  <option>1h</option>
-                  <option>4h</option>
-                  <option>1d</option>
-                </select>
-                <button className="indicator-btn">
-                  <FaChartLine /> Add Indicator
+              <div className="profile-tabs">
+                <button 
+                  className={`profile-tab ${activeTab === 'overview' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('overview')}
+                >
+                  <FaInfoCircle /> Overview
+                </button>
+                <button 
+                  className={`profile-tab ${activeTab === 'news' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('news')}
+                >
+                  <FaNewspaper /> News
+                </button>
+                <button 
+                  className={`profile-tab ${activeTab === 'financials' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('financials')}
+                >
+                  <FaChartLine /> Financials
+                </button>
+                <button 
+                  className={`profile-tab ${activeTab === 'social' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('social')}
+                >
+                  <FaUsers /> Social Sentiment
                 </button>
               </div>
-            </div>
-            <div className="chart-area">
-              Chart Component Will Go Here
-            </div>
-          </div>
-        </section>
 
-        <section className="portfolio-section">
-          <div className="content-header">
-            <div className="account-tabs">
-              <button 
-                className={`account-tab ${activeAccount === 'all' ? 'active' : ''}`}
-                onClick={() => setActiveAccount('all')}
-              >
-                All Accounts
-              </button>
-              <button 
-                className={`account-tab ${activeAccount === 'trading' ? 'active' : ''}`}
-                onClick={() => setActiveAccount('trading')}
-              >
-                Trading
-              </button>
-              <button 
-                className={`account-tab ${activeAccount === 'crypto' ? 'active' : ''}`}
-                onClick={() => setActiveAccount('crypto')}
-              >
-                Crypto
-              </button>
-            </div>
-          </div>
+              <div className="profile-content">
+                {activeTab === 'overview' && (
+                  <div className="overview-tab">
+                    <div className="company-description">
+                      <h3>About {selectedCompany.name}</h3>
+                      <p>{selectedCompany.description}</p>
+                    </div>
+                    
+                    <div className="key-stats">
+                      <h3>Key Statistics</h3>
+                      <div className="stats-grid">
+                        <div className="stat-item">
+                          <span className="stat-label">Market Cap</span>
+                          <span className="stat-value">{selectedCompany.marketCap}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">P/E Ratio</span>
+                          <span className="stat-value">{selectedCompany.pe}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Volume</span>
+                          <span className="stat-value">{selectedCompany.volume}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Dividend Yield</span>
+                          <span className="stat-value">{selectedCompany.dividend}%</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">52-Week High</span>
+                          <span className="stat-value">${(selectedCompany.price * 1.2).toFixed(2)}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">52-Week Low</span>
+                          <span className="stat-value">${(selectedCompany.price * 0.8).toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
 
-          <div className="portfolio-container">
-            <div className="portfolio-header">
-              <div className="portfolio-value-section">
-                <div className="value-toggle">
-                  <button 
-                    className={`toggle-btn ${showDollars ? 'active' : ''}`}
-                    onClick={() => setShowDollars(true)}
-                  >
-                    <FaDollarSign />
-                  </button>
-                  <button 
-                    className={`toggle-btn ${!showDollars ? 'active' : ''}`}
-                    onClick={() => setShowDollars(false)}
-                  >
-                    <FaPercent />
-                  </button>
-                </div>
-                <h2 className="portfolio-amount">
-                  {showDollars ? '$125,432.67' : '+23.45%'}
-                </h2>
-                <div className="portfolio-change positive">
-                  <FaCaretUp />
-                  <span>
-                    {showDollars ? '+$2,345.67' : '+1.89%'} Today
-                  </span>
-                </div>
+                    <div className="trading-actions">
+                      <button className="action-btn buy">Buy {selectedCompany.symbol}</button>
+                      <button className="action-btn sell">Sell {selectedCompany.symbol}</button>
+                      <button className="action-btn options">Options Chain</button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'news' && (
+                  <div className="news-tab">
+                    <h3>Latest News for {selectedCompany.symbol}</h3>
+                    <div className="news-list">
+                      {getCompanyNews(selectedCompany.symbol).length > 0 ? (
+                        getCompanyNews(selectedCompany.symbol).map(newsItem => (
+                          <div key={newsItem.id} className="news-item">
+                            <h4>{newsItem.title}</h4>
+                            <div className="news-meta">
+                              <span className="news-source">{newsItem.source}</span>
+                              <span className="news-date">{newsItem.date}</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No recent news available for {selectedCompany.symbol}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'financials' && (
+                  <div className="financials-tab">
+                    <h3>Financial Performance</h3>
+                    <p>Quarterly and annual financial data will be displayed here.</p>
+                    <div className="financial-placeholder">
+                      Financial charts and metrics coming soon
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'social' && (
+                  <div className="social-tab">
+                    <h3>Social Media Sentiment</h3>
+                    <div className="sentiment-score">
+                      <div className="score-label">Overall Sentiment</div>
+                      <div className="score-value positive">78/100</div>
+                    </div>
+                    <div className="sentiment-breakdown">
+                      <h4>Sentiment Sources</h4>
+                      <div className="source-item">
+                        <span>Twitter</span>
+                        <div className="sentiment-bar positive" style={{width: '65%'}}>65%</div>
+                      </div>
+                      <div className="source-item">
+                        <span>Reddit</span>
+                        <div className="sentiment-bar positive" style={{width: '82%'}}>82%</div>
+                      </div>
+                      <div className="source-item">
+                        <span>Financial News</span>
+                        <div className="sentiment-bar positive" style={{width: '73%'}}>73%</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            </section>
+          )}
 
-            <div className="portfolio-chart-container">
-              <div className="chart-area">
-                <div className="chart-placeholder">
-                  Interactive Chart Area
-                </div>
-                <div className="chart-hover-info">
-                  <span className="hover-date">Apr 15, 2024</span>
-                  <span className="hover-value">$125,432.67</span>
-                  <span className="hover-change positive">+$2,345.67 (+1.89%)</span>
-                </div>
-              </div>
-              
-              <div className="time-frame-selector">
-                {['1D', '1W', '1M', '3M', '1Y', 'ALL'].map((frame) => (
-                  <button
-                    key={frame}
-                    className={`time-btn ${timeFrame === frame ? 'active' : ''}`}
-                    onClick={() => setTimeFrame(frame)}
-                  >
-                    {frame}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="portfolio-metrics">
+          {/* Account Summary Section */}
+          <section className="account-summary-section">
+            <h2>Your Account Summary</h2>
+            <div className="account-metrics">
               <div className="metric-card">
-                <span className="metric-label">Buying Power</span>
-                <span className="metric-value">$45,678.90</span>
+                <span className="metric-label">Total Portfolio Value</span>
+                <span className="metric-value">$145,892.43</span>
+                <span className="metric-change positive">+$2,341.22 (1.63%)</span>
               </div>
               <div className="metric-card">
                 <span className="metric-label">Cash Balance</span>
                 <span className="metric-value">$23,456.78</span>
               </div>
               <div className="metric-card">
-                <span className="metric-label">Margin Used</span>
-                <span className="metric-value">$12,345.67</span>
+                <span className="metric-label">Invested Value</span>
+                <span className="metric-value">$122,435.65</span>
               </div>
             </div>
 
-            <div className="holdings-list">
-              <h3>Current Holdings</h3>
-              <div className="holding-item">
-                <div className="holding-header">
-                  <span className="holding-symbol">AAPL</span>
-                  <span className="holding-shares">100 shares</span>
+            <div className="recent-activity">
+              <h3>Recent Activity</h3>
+              <div className="activity-list">
+                <div className="activity-item">
+                  <FaHistory className="activity-icon" />
+                  <div className="activity-details">
+                    <div className="activity-title">Bought AAPL</div>
+                    <div className="activity-meta">20 shares at $175.34</div>
+                  </div>
+                  <div className="activity-time">2 hours ago</div>
                 </div>
-                <div className="holding-details">
-                  <div className="detail-column">
-                    <span className="detail-label">Market Value</span>
-                    <span className="detail-value">$17,534.00</span>
+                <div className="activity-item">
+                  <FaHistory className="activity-icon" />
+                  <div className="activity-details">
+                    <div className="activity-title">Sold TSLA</div>
+                    <div className="activity-meta">5 shares at $242.56</div>
                   </div>
-                  <div className="detail-column">
-                    <span className="detail-label">Avg Cost</span>
-                    <span className="detail-value">$165.45</span>
-                  </div>
-                  <div className="detail-column">
-                    <span className="detail-label">Total Return</span>
-                    <span className="detail-value positive">+$989.00</span>
-                  </div>
+                  <div className="activity-time">Yesterday</div>
                 </div>
-              </div>
-
-              <div className="holding-item">
-                <div className="holding-header">
-                  <span className="holding-symbol">TSLA</span>
-                  <span className="holding-shares">50 shares</span>
-                </div>
-                <div className="holding-details">
-                  <div className="detail-column">
-                    <span className="detail-label">Market Value</span>
-                    <span className="detail-value">$12,134.00</span>
+                <div className="activity-item">
+                  <FaHistory className="activity-icon" />
+                  <div className="activity-details">
+                    <div className="activity-title">Dividend Received</div>
+                    <div className="activity-meta">MSFT quarterly dividend</div>
                   </div>
-                  <div className="detail-column">
-                    <span className="detail-label">Avg Cost</span>
-                    <span className="detail-value">$234.56</span>
-                  </div>
-                  <div className="detail-column">
-                    <span className="detail-label">Total Return</span>
-                    <span className="detail-value negative">-$456.00</span>
-                  </div>
+                  <div className="activity-time">May 1, 2023</div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        <aside className="trading-sidebar">
-          <div className="trading-form">
-            <h3>Options Trade</h3>
-            <div className="form-tabs">
-              <button 
-                className={`form-tab ${optionType === 'call' ? 'active' : ''}`}
-                onClick={() => setOptionType('call')}
-              >
-                Call
-              </button>
-              <button 
-                className={`form-tab ${optionType === 'put' ? 'active' : ''}`}
-                onClick={() => setOptionType('put')}
-              >
-                Put
-              </button>
-            </div>
-            <div className="form-content">
-              <div className="form-group">
-                <label>Expiration Date</label>
-                <select 
-                  value={expiryDate} 
-                  onChange={(e) => setExpiryDate(e.target.value)}
-                  className="expiry-select"
-                >
-                  <option value="">Select Expiry</option>
-                  {getExpiryDates().map(date => (
-                    <option key={date.toISOString()} value={date.toISOString()}>
-                      {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>Strike Price</label>
-                <input type="number" step="0.5" placeholder="Enter strike price" />
-              </div>
-
-              <div className="form-group">
-                <label>Contracts</label>
-                <input type="number" min="1" placeholder="Number of contracts" />
-              </div>
-
-              <div className="options-info">
-                <div className="info-row">
-                  <span>Bid</span>
-                  <span>$4.25</span>
-                </div>
-                <div className="info-row">
-                  <span>Ask</span>
-                  <span>$4.35</span>
-                </div>
-                <div className="info-row">
-                  <span>IV</span>
-                  <span>45.67%</span>
-                </div>
-                <div className="info-row">
-                  <span>Delta</span>
-                  <span>0.65</span>
-                </div>
-                <div className="info-row">
-                  <span>Theta</span>
-                  <span>-0.045</span>
-                </div>
-                <div className="info-row">
-                  <span>Gamma</span>
-                  <span>0.023</span>
-                </div>
-              </div>
-
-              <div className="order-summary">
-                <div className="summary-row">
-                  <span>Premium/Contract:</span>
-                  <span>$435.00</span>
-                </div>
-                <div className="summary-row">
-                  <span>Total Cost:</span>
-                  <span>$4,350.00</span>
-                </div>
-                <div className="summary-row">
-                  <span>Max Loss:</span>
-                  <span>$4,350.00</span>
-                </div>
-                <div className="summary-row">
-                  <span>Break Even:</span>
-                  <span>$244.35</span>
-                </div>
-              </div>
-
-              <button className={`submit-btn ${optionType === 'call' ? 'buy' : 'sell'}`}>
-                Place {optionType.toUpperCase()} Order
-              </button>
-            </div>
-          </div>
-
-          <div className="active-options">
-            <h3>Active Options</h3>
-            <div className="options-list">
-              <div className="option-item">
-                <div className="option-header">
-                  <span className="option-type call">AAPL 180c</span>
-                  <span className="option-exp">Jun 21</span>
-                </div>
-                <div className="option-details">
-                  <div className="detail-row">
-                    <span>Qty: 10</span>
-                    <span>Avg: $4.25</span>
-                  </div>
-                  <div className="detail-row">
-                    <span>P/L: +$850</span>
-                    <span className="positive">+20%</span>
-                  </div>
-                </div>
-              </div>
-              <div className="option-item">
-                <div className="option-header">
-                  <span className="option-type put">SPY 430p</span>
-                  <span className="option-exp">May 17</span>
-                </div>
-                <div className="option-details">
-                  <div className="detail-row">
-                    <span>Qty: 5</span>
-                    <span>Avg: $3.15</span>
-                  </div>
-                  <div className="detail-row">
-                    <span>P/L: -$325</span>
-                    <span className="negative">-12%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
+          </section>
+        </div>
       </div>
     </div>
   );

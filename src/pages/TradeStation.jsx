@@ -1,31 +1,49 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSearch, FaBell, FaWallet, FaUser, FaStar, FaChartLine, FaCaretUp, FaCaretDown, FaInfoCircle, FaNewspaper, FaUsers, FaGlobe, FaHistory } from 'react-icons/fa';
+import { FaSearch, FaBell, FaWallet, FaUser, FaStar, FaChartLine, FaCaretUp, FaCaretDown, 
+         FaPlusCircle, FaEllipsisH, FaRegListAlt, FaPlus, FaChartBar, FaRegChartBar, 
+         FaGlobe, FaRegNewspaper, FaArrowRight, FaPen, FaRegStar } from 'react-icons/fa';
 import './TradeStation.css';
 
 const TradeStation = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCompany, setSelectedCompany] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedTab, setSelectedTab] = useState('markets');
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [activeWatchlist, setActiveWatchlist] = useState('default');
 
-  // Mock data for top companies
-  const topCompanies = [
-    { id: 1, symbol: 'AAPL', name: 'Apple Inc.', price: 175.34, change: 4.23, changePercent: 2.45, volume: '65.3M', marketCap: '2.89T', pe: 28.97, dividend: 0.82, description: 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.' },
-    { id: 2, symbol: 'MSFT', name: 'Microsoft Corporation', price: 327.89, change: 2.54, changePercent: 0.78, volume: '22.1M', marketCap: '2.45T', pe: 35.12, dividend: 0.95, description: 'Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide.' },
-    { id: 3, symbol: 'GOOGL', name: 'Alphabet Inc.', price: 132.67, change: -1.25, changePercent: -0.93, volume: '18.7M', marketCap: '1.67T', pe: 25.34, dividend: 0, description: 'Alphabet Inc. provides various products and platforms in the United States, Europe, the Middle East, Africa, the Asia-Pacific, Canada, and Latin America.' },
-    { id: 4, symbol: 'AMZN', name: 'Amazon.com, Inc.', price: 129.45, change: 3.78, changePercent: 3.01, volume: '41.2M', marketCap: '1.34T', pe: 61.87, dividend: 0, description: 'Amazon.com, Inc. engages in the retail sale of consumer products and subscriptions in North America and internationally.' },
-    { id: 5, symbol: 'TSLA', name: 'Tesla, Inc.', price: 242.56, change: -5.67, changePercent: -2.29, volume: '132.5M', marketCap: '769.42B', pe: 49.52, dividend: 0, description: 'Tesla, Inc. designs, develops, manufactures, leases, and sells electric vehicles, and energy generation and storage systems.' },
+  // Mock data for recommended funds
+  const recommendedFunds = [
+    { id: 1, symbol: 'SPY', name: 'SPDR S&P 500 ETF Trust', price: 463.84, change: 5.23, changePercent: 1.14, type: 'ETF', aum: '395.8B', expense: 0.09 },
+    { id: 2, symbol: 'QQQ', name: 'Invesco QQQ Trust', price: 376.78, change: 7.31, changePercent: 1.98, type: 'ETF', aum: '189.5B', expense: 0.20 },
+    { id: 3, symbol: 'VFIAX', name: 'Vanguard 500 Index Fund', price: 463.24, change: 5.15, changePercent: 1.12, type: 'Mutual Fund', aum: '845.2B', expense: 0.04 },
+    { id: 4, symbol: 'VTSAX', name: 'Vanguard Total Stock Market Index', price: 112.04, change: 1.25, changePercent: 1.13, type: 'Mutual Fund', aum: '1.3T', expense: 0.04 },
+    { id: 5, symbol: 'FXAIX', name: 'Fidelity 500 Index Fund', price: 166.87, change: 1.86, changePercent: 1.13, type: 'Mutual Fund', aum: '398.6B', expense: 0.015 },
   ];
 
-  // Recent news for companies (mock data)
-  const companyNews = [
-    { id: 1, company: 'AAPL', title: 'Apple Reports Record Q2 Earnings', date: '2023-05-01', source: 'Financial Times' },
-    { id: 2, company: 'AAPL', title: 'New iPhone 15 Rumored to Feature Major Camera Upgrade', date: '2023-04-28', source: 'Tech Insider' },
-    { id: 3, company: 'MSFT', title: 'Microsoft Cloud Services See 31% Growth', date: '2023-05-02', source: 'Wall Street Journal' },
-    { id: 4, company: 'GOOGL', title: 'Google Unveils New AI Advancements at Annual Conference', date: '2023-04-30', source: 'CNBC' },
-    { id: 5, company: 'AMZN', title: 'Amazon Prime Day Set for July 11-12', date: '2023-05-03', source: 'Reuters' },
+  // Mock data for stocks
+  const stocks = [
+    { id: 1, symbol: 'AAPL', name: 'Apple Inc.', price: 175.34, change: 4.23, changePercent: 2.45, type: 'Stock' },
+    { id: 2, symbol: 'MSFT', name: 'Microsoft Corporation', price: 327.89, change: 2.54, changePercent: 0.78, type: 'Stock' },
+    { id: 3, symbol: 'GOOGL', name: 'Alphabet Inc.', price: 132.67, change: -1.25, changePercent: -0.93, type: 'Stock' },
+    { id: 4, symbol: 'AMZN', name: 'Amazon.com, Inc.', price: 129.45, change: 3.78, changePercent: 3.01, type: 'Stock' },
+    { id: 5, symbol: 'TSLA', name: 'Tesla, Inc.', price: 242.56, change: -5.67, changePercent: -2.29, type: 'Stock' },
+    { id: 6, symbol: 'META', name: 'Meta Platforms, Inc.', price: 316.29, change: 4.83, changePercent: 1.55, type: 'Stock' },
+    { id: 7, symbol: 'NVDA', name: 'NVIDIA Corporation', price: 467.65, change: 15.32, changePercent: 3.39, type: 'Stock' },
+    { id: 8, symbol: 'JPM', name: 'JPMorgan Chase & Co.', price: 187.92, change: -2.18, changePercent: -1.15, type: 'Stock' },
   ];
+
+  // Mock data for watchlists
+  const [watchlists, setWatchlists] = useState([
+    { id: 'default', name: 'My First List', assets: ['AAPL', 'MSFT', 'GOOGL', 'AMZN'] },
+    { id: 'tech', name: 'Tech Stocks', assets: ['AAPL', 'MSFT', 'NVDA', 'GOOGL'] },
+    { id: 'etfs', name: 'ETFs', assets: ['SPY', 'QQQ'] }
+  ]);
+
+  // Portfolio data (mock)
+  const portfolioValue = 145892.43;
+  const portfolioChange = 2341.22;
+  const portfolioChangePercent = 1.63;
 
   const handleLogout = () => {
     navigate('/');
@@ -33,36 +51,95 @@ const TradeStation = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const foundCompany = topCompanies.find(
-      company => company.symbol.toLowerCase() === searchQuery.toLowerCase() || 
-                company.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const foundAsset = [...stocks, ...recommendedFunds].find(
+      asset => asset.symbol.toLowerCase() === searchQuery.toLowerCase() || 
+                asset.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     
-    if (foundCompany) {
-      setSelectedCompany(foundCompany);
-      setActiveTab('overview');
+    if (foundAsset) {
+      setSelectedAsset(foundAsset);
     }
   };
 
-  // Filter news for the selected company
-  const getCompanyNews = (symbol) => {
-    return companyNews.filter(news => news.company === symbol);
+  const handleAddToWatchlist = (symbol) => {
+    if (!watchlists.find(w => w.id === activeWatchlist).assets.includes(symbol)) {
+      setWatchlists(watchlists.map(list => 
+        list.id === activeWatchlist 
+          ? { ...list, assets: [...list.assets, symbol] } 
+          : list
+      ));
+    }
   };
+
+  const handleRemoveFromWatchlist = (symbol) => {
+    setWatchlists(watchlists.map(list => 
+      list.id === activeWatchlist 
+        ? { ...list, assets: list.assets.filter(s => s !== symbol) } 
+        : list
+    ));
+  };
+
+  const handleCreateWatchlist = () => {
+    const newId = `list-${watchlists.length + 1}`;
+    setWatchlists([...watchlists, { id: newId, name: `Watchlist ${watchlists.length + 1}`, assets: [] }]);
+    setActiveWatchlist(newId);
+  };
+
+  const getWatchlistAssets = () => {
+    const currentWatchlist = watchlists.find(w => w.id === activeWatchlist);
+    if (!currentWatchlist) return [];
+    
+    return [...stocks, ...recommendedFunds].filter(asset => 
+      currentWatchlist.assets.includes(asset.symbol)
+    );
+  };
+
+  const renderAssetRow = (asset, inWatchlist = false) => (
+    <div key={asset.id} className="asset-row" onClick={() => setSelectedAsset(asset)}>
+      <div className="asset-info">
+        <div className="asset-symbol">{asset.symbol}</div>
+        <div className="asset-name">{asset.name}</div>
+      </div>
+      <div className="asset-price-container">
+        <div className="asset-price">${asset.price.toFixed(2)}</div>
+        <div className={`asset-change ${asset.change >= 0 ? 'positive' : 'negative'}`}>
+          {asset.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
+          {asset.changePercent.toFixed(2)}%
+        </div>
+      </div>
+      <div className="asset-actions">
+        {inWatchlist ? (
+          <button className="icon-button" onClick={(e) => {
+            e.stopPropagation();
+            handleRemoveFromWatchlist(asset.symbol);
+          }}>
+            <FaStar />
+          </button>
+        ) : (
+          <button className="icon-button" onClick={(e) => {
+            e.stopPropagation();
+            handleAddToWatchlist(asset.symbol);
+          }}>
+            <FaRegStar />
+          </button>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className="tradestation-container">
       <nav className="dashboard-nav">
         <div className="nav-left">
-          <div className="dashboard-logo">RobberBaron.ai</div>
+          <div className="dashboard-logo">RobberBaron</div>
           <form onSubmit={handleSearch} className="search-bar">
             <FaSearch className="search-icon" />
             <input 
               type="text" 
-              placeholder="Search for companies (e.g., AAPL, Microsoft)" 
+              placeholder="Search" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit" className="search-button">Search</button>
           </form>
         </div>
         <div className="nav-controls">
@@ -71,7 +148,7 @@ const TradeStation = () => {
             <span className="notification-badge">3</span>
           </button>
           <button className="nav-button">
-            <FaWallet /> $100,000.00
+            <FaWallet />
           </button>
           <button className="nav-button">
             <FaUser />
@@ -82,235 +159,268 @@ const TradeStation = () => {
         </div>
       </nav>
 
-      <div className="main-content-wrapper">
-        <div className="account-dashboard">
-          {/* Top Companies Section */}
-          <section className="top-companies-section">
-            <h2>Top Companies</h2>
-            <div className="company-list">
-              {topCompanies.map(company => (
-                <div 
-                  key={company.id} 
-                  className={`company-card ${selectedCompany?.symbol === company.symbol ? 'selected' : ''}`}
-                  onClick={() => {
-                    setSelectedCompany(company);
-                    setActiveTab('overview');
-                  }}
-                >
-                  <div className="company-header">
-                    <div className="company-symbol">{company.symbol}</div>
-                    <div className="company-name">{company.name}</div>
-                  </div>
-                  <div className="company-price">${company.price.toFixed(2)}</div>
-                  <div className={`company-change ${company.change >= 0 ? 'positive' : 'negative'}`}>
-                    {company.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
-                    {company.change.toFixed(2)} ({company.changePercent.toFixed(2)}%)
-                  </div>
-                </div>
-              ))}
+      <div className="robinhood-dashboard">
+        {/* Portfolio Section - Always visible at top */}
+        <section className="portfolio-section">
+          <div className="portfolio-value-container">
+            <h3>Portfolio Value</h3>
+            <div className="portfolio-value">${portfolioValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div className={`portfolio-change ${portfolioChange >= 0 ? 'positive' : 'negative'}`}>
+              {portfolioChange >= 0 ? "+" : ""}{portfolioChange.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({portfolioChangePercent}%) Today
             </div>
-          </section>
+          </div>
+          <div className="portfolio-chart-placeholder">
+            Chart will go here
+          </div>
+          <div className="portfolio-timeframes">
+            <button className="timeframe-btn active">1D</button>
+            <button className="timeframe-btn">1W</button>
+            <button className="timeframe-btn">1M</button>
+            <button className="timeframe-btn">3M</button>
+            <button className="timeframe-btn">1Y</button>
+            <button className="timeframe-btn">ALL</button>
+          </div>
+          <div className="cta-buttons">
+            <button className="cta-button">Buy</button>
+            <button className="cta-button sell">Sell</button>
+          </div>
+        </section>
 
-          {/* Company Profile Section */}
-          {selectedCompany && (
-            <section className="company-profile-section">
-              <div className="profile-header">
-                <div className="company-title">
-                  <h1>{selectedCompany.symbol}</h1>
-                  <h2>{selectedCompany.name}</h2>
+        {/* Main Tabs */}
+        <div className="dashboard-tabs">
+          <button 
+            className={`dashboard-tab ${selectedTab === 'markets' ? 'active' : ''}`}
+            onClick={() => setSelectedTab('markets')}
+          >
+            <FaGlobe /> Markets
+          </button>
+          <button 
+            className={`dashboard-tab ${selectedTab === 'lists' ? 'active' : ''}`}
+            onClick={() => setSelectedTab('lists')}
+          >
+            <FaRegListAlt /> Lists
+          </button>
+          <button 
+            className={`dashboard-tab ${selectedTab === 'news' ? 'active' : ''}`}
+            onClick={() => setSelectedTab('news')}
+          >
+            <FaRegNewspaper /> News
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="dashboard-content">
+          {selectedTab === 'markets' && (
+            <div className="markets-tab">
+              <section className="recommended-section">
+                <div className="section-header">
+                  <h3>Recommended Funds</h3>
+                  <button className="view-all-btn">
+                    View All <FaArrowRight />
+                  </button>
                 </div>
-                <div className="company-price-large">
-                  <div className="current-price">${selectedCompany.price.toFixed(2)}</div>
-                  <div className={`price-change ${selectedCompany.change >= 0 ? 'positive' : 'negative'}`}>
-                    {selectedCompany.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
-                    {selectedCompany.change.toFixed(2)} ({selectedCompany.changePercent.toFixed(2)}%)
-                  </div>
+                <div className="funds-grid">
+                  {recommendedFunds.map(fund => (
+                    <div 
+                      key={fund.id} 
+                      className="fund-card"
+                      onClick={() => setSelectedAsset(fund)}
+                    >
+                      <div className="fund-header">
+                        <span className="fund-symbol">{fund.symbol}</span>
+                        <span className="fund-type">{fund.type}</span>
+                      </div>
+                      <div className="fund-price">${fund.price.toFixed(2)}</div>
+                      <div className={`fund-change ${fund.change >= 0 ? 'positive' : 'negative'}`}>
+                        {fund.change >= 0 ? <FaCaretUp /> : <FaCaretDown />}
+                        {fund.changePercent.toFixed(2)}%
+                      </div>
+                      <div className="fund-info">
+                        <div className="info-item">
+                          <span className="info-label">AUM:</span>
+                          <span className="info-value">{fund.aum}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="info-label">Expense:</span>
+                          <span className="info-value">{fund.expense}%</span>
+                        </div>
+                      </div>
+                      <button className="add-to-watchlist" onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToWatchlist(fund.symbol);
+                      }}>
+                        <FaPlus /> Add to List
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <button className="add-to-watchlist"><FaStar /> Add to Watchlist</button>
-              </div>
+              </section>
 
-              <div className="profile-tabs">
-                <button 
-                  className={`profile-tab ${activeTab === 'overview' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('overview')}
-                >
-                  <FaInfoCircle /> Overview
-                </button>
-                <button 
-                  className={`profile-tab ${activeTab === 'news' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('news')}
-                >
-                  <FaNewspaper /> News
-                </button>
-                <button 
-                  className={`profile-tab ${activeTab === 'financials' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('financials')}
-                >
-                  <FaChartLine /> Financials
-                </button>
-                <button 
-                  className={`profile-tab ${activeTab === 'social' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('social')}
-                >
-                  <FaUsers /> Social Sentiment
-                </button>
-              </div>
-
-              <div className="profile-content">
-                {activeTab === 'overview' && (
-                  <div className="overview-tab">
-                    <div className="company-description">
-                      <h3>About {selectedCompany.name}</h3>
-                      <p>{selectedCompany.description}</p>
-                    </div>
-                    
-                    <div className="key-stats">
-                      <h3>Key Statistics</h3>
-                      <div className="stats-grid">
-                        <div className="stat-item">
-                          <span className="stat-label">Market Cap</span>
-                          <span className="stat-value">{selectedCompany.marketCap}</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-label">P/E Ratio</span>
-                          <span className="stat-value">{selectedCompany.pe}</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-label">Volume</span>
-                          <span className="stat-value">{selectedCompany.volume}</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-label">Dividend Yield</span>
-                          <span className="stat-value">{selectedCompany.dividend}%</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-label">52-Week High</span>
-                          <span className="stat-value">${(selectedCompany.price * 1.2).toFixed(2)}</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-label">52-Week Low</span>
-                          <span className="stat-value">${(selectedCompany.price * 0.8).toFixed(2)}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="trading-actions">
-                      <button className="action-btn buy">Buy {selectedCompany.symbol}</button>
-                      <button className="action-btn sell">Sell {selectedCompany.symbol}</button>
-                      <button className="action-btn options">Options Chain</button>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'news' && (
-                  <div className="news-tab">
-                    <h3>Latest News for {selectedCompany.symbol}</h3>
-                    <div className="news-list">
-                      {getCompanyNews(selectedCompany.symbol).length > 0 ? (
-                        getCompanyNews(selectedCompany.symbol).map(newsItem => (
-                          <div key={newsItem.id} className="news-item">
-                            <h4>{newsItem.title}</h4>
-                            <div className="news-meta">
-                              <span className="news-source">{newsItem.source}</span>
-                              <span className="news-date">{newsItem.date}</span>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No recent news available for {selectedCompany.symbol}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'financials' && (
-                  <div className="financials-tab">
-                    <h3>Financial Performance</h3>
-                    <p>Quarterly and annual financial data will be displayed here.</p>
-                    <div className="financial-placeholder">
-                      Financial charts and metrics coming soon
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'social' && (
-                  <div className="social-tab">
-                    <h3>Social Media Sentiment</h3>
-                    <div className="sentiment-score">
-                      <div className="score-label">Overall Sentiment</div>
-                      <div className="score-value positive">78/100</div>
-                    </div>
-                    <div className="sentiment-breakdown">
-                      <h4>Sentiment Sources</h4>
-                      <div className="source-item">
-                        <span>Twitter</span>
-                        <div className="sentiment-bar positive" style={{width: '65%'}}>65%</div>
-                      </div>
-                      <div className="source-item">
-                        <span>Reddit</span>
-                        <div className="sentiment-bar positive" style={{width: '82%'}}>82%</div>
-                      </div>
-                      <div className="source-item">
-                        <span>Financial News</span>
-                        <div className="sentiment-bar positive" style={{width: '73%'}}>73%</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
+              <section className="popular-section">
+                <div className="section-header">
+                  <h3>Popular Stocks</h3>
+                  <button className="view-all-btn">
+                    View All <FaArrowRight />
+                  </button>
+                </div>
+                <div className="asset-list">
+                  {stocks.slice(0, 5).map(stock => renderAssetRow(stock))}
+                </div>
+              </section>
+            </div>
           )}
 
-          {/* Account Summary Section */}
-          <section className="account-summary-section">
-            <h2>Your Account Summary</h2>
-            <div className="account-metrics">
-              <div className="metric-card">
-                <span className="metric-label">Total Portfolio Value</span>
-                <span className="metric-value">$145,892.43</span>
-                <span className="metric-change positive">+$2,341.22 (1.63%)</span>
+          {selectedTab === 'lists' && (
+            <div className="lists-tab">
+              <div className="watchlist-selector">
+                <div className="watchlist-header">
+                  <h3>Your Lists</h3>
+                  <button className="create-list-btn" onClick={handleCreateWatchlist}>
+                    <FaPlusCircle /> Create List
+                  </button>
+                </div>
+                <div className="watchlist-tabs">
+                  {watchlists.map(list => (
+                    <button 
+                      key={list.id}
+                      className={`watchlist-tab ${activeWatchlist === list.id ? 'active' : ''}`}
+                      onClick={() => setActiveWatchlist(list.id)}
+                    >
+                      {list.name} ({list.assets.length})
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="metric-card">
-                <span className="metric-label">Cash Balance</span>
-                <span className="metric-value">$23,456.78</span>
-              </div>
-              <div className="metric-card">
-                <span className="metric-label">Invested Value</span>
-                <span className="metric-value">$122,435.65</span>
+              
+              <div className="watchlist-content">
+                <div className="watchlist-header">
+                  <h3>{watchlists.find(w => w.id === activeWatchlist)?.name}</h3>
+                  <button className="edit-btn">
+                    <FaPen /> Edit List
+                  </button>
+                </div>
+                
+                <div className="asset-list">
+                  {getWatchlistAssets().length > 0 ? (
+                    getWatchlistAssets().map(asset => renderAssetRow(asset, true))
+                  ) : (
+                    <div className="empty-watchlist">
+                      <p>No assets in this list yet.</p>
+                      <p>Search for stocks, ETFs, or mutual funds to add them here.</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+          )}
 
-            <div className="recent-activity">
-              <h3>Recent Activity</h3>
-              <div className="activity-list">
-                <div className="activity-item">
-                  <FaHistory className="activity-icon" />
-                  <div className="activity-details">
-                    <div className="activity-title">Bought AAPL</div>
-                    <div className="activity-meta">20 shares at $175.34</div>
-                  </div>
-                  <div className="activity-time">2 hours ago</div>
+          {selectedTab === 'news' && (
+            <div className="news-tab">
+              <h3>Latest Market News</h3>
+              <div className="news-list">
+                <div className="news-item">
+                  <div className="news-source">The Wall Street Journal</div>
+                  <h4 className="news-title">Fed Signals Potential Rate Cuts as Inflation Eases</h4>
+                  <div className="news-meta">2 hours ago</div>
                 </div>
-                <div className="activity-item">
-                  <FaHistory className="activity-icon" />
-                  <div className="activity-details">
-                    <div className="activity-title">Sold TSLA</div>
-                    <div className="activity-meta">5 shares at $242.56</div>
-                  </div>
-                  <div className="activity-time">Yesterday</div>
+                <div className="news-item">
+                  <div className="news-source">Bloomberg</div>
+                  <h4 className="news-title">Tech Stocks Rally on Strong Earnings Reports</h4>
+                  <div className="news-meta">4 hours ago</div>
                 </div>
-                <div className="activity-item">
-                  <FaHistory className="activity-icon" />
-                  <div className="activity-details">
-                    <div className="activity-title">Dividend Received</div>
-                    <div className="activity-meta">MSFT quarterly dividend</div>
-                  </div>
-                  <div className="activity-time">May 1, 2023</div>
+                <div className="news-item">
+                  <div className="news-source">CNBC</div>
+                  <h4 className="news-title">Market Analysis: What's Behind Today's Rally?</h4>
+                  <div className="news-meta">Yesterday</div>
+                </div>
+                <div className="news-item">
+                  <div className="news-source">Reuters</div>
+                  <h4 className="news-title">Global Markets: Asian Shares Hit Record High</h4>
+                  <div className="news-meta">Yesterday</div>
                 </div>
               </div>
             </div>
-          </section>
+          )}
         </div>
+
+        {/* Asset Detail Modal */}
+        {selectedAsset && (
+          <div className="asset-detail-modal">
+            <div className="modal-header">
+              <div>
+                <h2>{selectedAsset.symbol}</h2>
+                <h3>{selectedAsset.name}</h3>
+              </div>
+              <button className="close-modal" onClick={() => setSelectedAsset(null)}>×</button>
+            </div>
+            
+            <div className="asset-price-panel">
+              <div className="current-price">${selectedAsset.price.toFixed(2)}</div>
+              <div className={`price-change ${selectedAsset.change >= 0 ? 'positive' : 'negative'}`}>
+                {selectedAsset.change >= 0 ? "+" : ""}{selectedAsset.change.toFixed(2)} ({selectedAsset.changePercent.toFixed(2)}%)
+              </div>
+            </div>
+            
+            <div className="asset-chart-placeholder">
+              Asset chart will go here
+            </div>
+            
+            <div className="asset-timeframes">
+              <button className="timeframe-btn active">1D</button>
+              <button className="timeframe-btn">1W</button>
+              <button className="timeframe-btn">1M</button>
+              <button className="timeframe-btn">3M</button>
+              <button className="timeframe-btn">1Y</button>
+              <button className="timeframe-btn">ALL</button>
+            </div>
+            
+            <div className="asset-actions-panel">
+              <button className="action-btn buy-btn">Buy</button>
+              <button className="action-btn sell-btn">Sell</button>
+              {watchlists.find(w => w.id === activeWatchlist).assets.includes(selectedAsset.symbol) ? (
+                <button className="action-btn list-btn active" onClick={() => handleRemoveFromWatchlist(selectedAsset.symbol)}>
+                  <FaStar /> Remove from List
+                </button>
+              ) : (
+                <button className="action-btn list-btn" onClick={() => handleAddToWatchlist(selectedAsset.symbol)}>
+                  <FaRegStar /> Add to List
+                </button>
+              )}
+            </div>
+            
+            {selectedAsset.type === 'ETF' || selectedAsset.type === 'Mutual Fund' ? (
+              <div className="asset-details">
+                <div className="detail-row">
+                  <span className="detail-label">Fund Type</span>
+                  <span className="detail-value">{selectedAsset.type}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Assets Under Management</span>
+                  <span className="detail-value">{selectedAsset.aum}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Expense Ratio</span>
+                  <span className="detail-value">{selectedAsset.expense}%</span>
+                </div>
+              </div>
+            ) : (
+              <div className="asset-details">
+                <div className="detail-row">
+                  <span className="detail-label">Market Cap</span>
+                  <span className="detail-value">$2.89T</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">P/E Ratio</span>
+                  <span className="detail-value">28.45</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Dividend Yield</span>
+                  <span className="detail-value">0.54%</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
